@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  app:
+    build: ./app
+    container_name: learn_app
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: db
+    depends_on:
+      - db
+    networks:
+      - learn_net
+
+  db:
+    image: postgres:15
+    container_name: learn_db
+    environment:
+      POSTGRES_DB: tasks
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - learn_net
+
+volumes:
+  db_data:
+
+networks:
+  learn_net:
+    driver: bridge
